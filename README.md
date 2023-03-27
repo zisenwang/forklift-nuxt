@@ -1,8 +1,8 @@
-# Nuxt 3 Minimal Starter
+# Forklift-Nuxt
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Setup
+## Backend setup
 
 1. Make sure to install the dependencies:
 
@@ -28,7 +28,12 @@ npx prisma migrate reset
 npx prisma db seed
 ```
 
-4. Have a .env file at root folder
+4. Have a .env file at root folder with the following format:
+```yaml
+SUPABASE_URL="<URL HERE>"
+SUPABASE_KEY="<ANON KEY HERE>"
+DATABASE_URL="<PGSQL URL HERE>"
+```
 
 ## Development Server
 
