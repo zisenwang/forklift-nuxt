@@ -1,12 +1,11 @@
-const { PrismaClient } = require('@prisma/client')
+import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient();
 
 async function main() {
-    const electricPalletTruck = await prisma.({
-        where: { id: 1 },
-        update : {},
-        create: [
+
+    const electricPalletTruck = await prisma.electric_Pallet_Trucks.createMany({
+        data: [
             {
                 model: "F4",
                 description: "Walkie type, Single PU wheel",
@@ -28,8 +27,8 @@ async function main() {
                         description: "Balancing Wheels",
                         rrp: 175
                     }
-                ],
-                notes: undefined
+                ] as Prisma.JsonArray,
+                notes: []
             },
             {
                 model: "EPL1531",
@@ -48,7 +47,7 @@ async function main() {
                         description: "Spare Battery",
                         rrp: 702
                     }
-                ],
+                ] as Prisma.JsonArray,
                 notes: [
                     "Stop new supply. A few stock left to be cleared on special price to dealers at $1250 plus GST (un-assembled)."
                 ]
@@ -66,7 +65,7 @@ async function main() {
                 travel_speed_kmh: 5.0,
                 rrp: 3935,
                 optionals: undefined,
-                notes: undefined
+                notes: []
             },
             {
                 model: "EPL185",
@@ -85,16 +84,14 @@ async function main() {
                         description: "48V/30Ah",
                         rrp: 429
                     }
-                ],
-                notes: undefined
+                ] as Prisma.JsonArray,
+                notes: []
             }
         ]
     });
 
-    const electricStacker = await prisma.electricStacker.upsert({
-        where: { id: 1 },
-        update : {},
-        create: [
+    const electricStacker = await prisma.electric_Stackers.createMany({
+        data: [
             {
                 model: "ES12-25DM",
                 description: "Walkie type, Duplex Mast",
@@ -132,7 +129,7 @@ async function main() {
                         description: "Duplex 3600mm",
                         rrp: 250
                     }
-                ],
+                ] as Prisma.JsonArray,
                 notes: [
                     "Mast Option for 'Duplex 2500mm, 2700mm, 3000mm'"
                 ]
@@ -182,16 +179,14 @@ async function main() {
                         description: "Triplex Mast, Lifting Height 6000mm",
                         rrp: 3703
                     }
-                ],
-                notes: null
+                ] as Prisma.JsonArray,
+                notes: []
             }
         ]
     });
 
-    const electricOrderPicker = await prisma.electricOrderPicker.upsert({
-        where: { id: 1 },
-        update : {},
-        create: [
+    const electricOrderPicker = await prisma.electric_Order_Pickers.createMany({
+        data: [
             {
                 model: "JX1",
                 description: "Electric Power Steering",
@@ -221,8 +216,8 @@ async function main() {
                         description: "Beeper: Beep on movement down, forward and backward (except lifting)",
                         rrp: 108
                     }
-                ],
-                notes: null
+                ] as Prisma.JsonArray,
+                notes: []
             },
             {
                 model: "JX2-1",
@@ -236,16 +231,14 @@ async function main() {
                 controller_type: "AC Zapi",
                 travel_speed_kmh: 8.0,
                 rrp: 19931,
-                optionals: null,
-                notes: null
+                optionals: undefined,
+                notes: []
             }
         ]
     });
 
-    const forklift = await prisma.forklift.upsert({
-        where: { id: 1 },
-        update: {},
-        create: [
+    const forklift = await prisma.forklifts.createMany({
+        data: [
             {
                 model: "EFL181",
                 description: "Four-wheel electric forklift, Triplex Mast, Solid tire, with Cascade Hang-on Sideshift, LED lights, Suspension Seat, with OPS System",
@@ -263,8 +256,8 @@ async function main() {
                         description: "48V/205Ah Lithium Battery",
                         rrp: 1785
                     }
-                ],
-                notes: null
+                ] as Prisma.JsonArray,
+                notes: []
             },
             {
                 model: "CPD18TVL",
@@ -278,8 +271,8 @@ async function main() {
                 controller_type: "AC Zapi",
                 travel_speed_kmh: null,
                 rrp: 36743,
-                optionals: null,
-                notes: null
+                optionals: undefined,
+                notes: []
             },
             {
                 model: "ICE301B",
@@ -306,8 +299,8 @@ async function main() {
                         description: "Duplex Mast, Lifting Height 3000mm",
                         rrp: -2154
                     }
-                ],
-                notes: null
+                ] as Prisma.JsonArray,
+                notes: []
             },
             {
                 model: "CPD20L3",
@@ -342,7 +335,7 @@ async function main() {
                         description: "For all 4.0 - 5.0 tons model: Cascade fork positioner & sideshifter (incl. 4th valves and pipelines)",
                         rrp: 4149
                     }
-                ],
+                ] as Prisma.JsonArray,
                 notes: [
                     "For all 1.8 - 5.0 tons model: Various mast height pricing refer to \"Options cost\" sheet."
                 ]
@@ -368,8 +361,8 @@ async function main() {
                         description: "410Ah Lithium Battery",
                         rrp: 7969
                     }
-                ],
-                notes: null
+                ] as Prisma.JsonArray,
+                notes: []
             }
         ]
     });

@@ -19,16 +19,10 @@ pnpm install
 
 2. Initialise Prisma:
 ```bash
-npx prisma migrate dev
-npx prisma migrate reset
+npx prisma db pull
 ```
 
-3. Seed the database:
-```bash
-npx prisma db seed
-```
-
-4. Have a .env file at root folder with the following format:
+3. Have a .env file at root folder with the following format:
 ```yaml
 SUPABASE_URL="<URL HERE>"
 SUPABASE_KEY="<ANON KEY HERE>"
