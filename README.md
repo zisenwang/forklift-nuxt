@@ -42,6 +42,13 @@ npx prisma db pull
 ```
 
 
+## Backend API routes
+```ts
+/inventory
+/inventory/[equipment]
+/inventory/[equipment]/[model]
+```
+
 ## Development Server
 
 Start the development server on http://localhost:3000
