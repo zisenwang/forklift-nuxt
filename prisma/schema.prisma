@@ -7,46 +7,81 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Equipment {
+model Electric_Order_Pickers {
+  id               BigInt    @id(map: "Electric_Order_Picker_pkey") @default(autoincrement())
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  model            String    @unique(map: "Electric_Order_Picker_model_key")
+  description      String?
+  capacity_kg      Int
+  lift_height_mm   Int?
+  fork_size        String?
+  battery_voltage  Int?      @db.SmallInt
+  battery_ampere   Int?      @db.SmallInt
+  battery_type     String?
+  controller_type  String?
+  travel_speed_kmh Float?    @db.Real
+  rrp              Int
+  notes            String[]
+  optionals        Json[]
+}
+
+model Electric_Pallet_Trucks {
+  id               BigInt    @id @default(autoincrement())
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  model            String    @unique
+  description      String?
+  capacity_kg      Int
+  lift_height_mm   Int?
+  fork_size        String?
+  battery_voltage  Int?      @db.SmallInt
+  battery_ampere   Int?      @db.SmallInt
+  battery_type     String?
+  controller_type  String?
+  travel_speed_kmh Float?    @db.Real
+  rrp              Int
+  notes            String[]
+  optionals        Json[]
+}
+
+model Electric_Stackers {
+  id               BigInt    @id(map: "Electric_Stacker_pkey") @default(autoincrement())
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  model            String    @unique(map: "Electric_Stacker_model_key")
+  description      String?
+  capacity_kg      Int
+  lift_height_mm   Int?
+  fork_size        String?
+  battery_voltage  Int?      @db.SmallInt
+  battery_ampere   Int?      @db.SmallInt
+  battery_type     String?
+  controller_type  String?
+  travel_speed_kmh Float?    @db.Real
+  rrp              Int
+  notes            String[]
+  optionals        Json[]
+}
+
+model Forklifts {
+  id               BigInt    @id @default(autoincrement())
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  model            String    @unique
+  description      String?
+  capacity_kg      Int
+  lift_height_mm   Int?
+  fork_size        String?
+  battery_voltage  Int?      @db.SmallInt
+  battery_ampere   Int?      @db.SmallInt
+  battery_type     String?
+  controller_type  String?
+  travel_speed_kmh Float?    @db.Real
+  rrp              Int
+  notes            String[]
+  optionals        Json[]
+}
+
+model Users {
   id         BigInt    @id @default(autoincrement())
   created_at DateTime? @default(now()) @db.Timestamptz(6)
-  type       String    @db.VarChar
-  Model      Model[]
-}
-
-model Model {
-  id               BigInt     @id @default(autoincrement())
-  created_at       DateTime?  @default(now()) @db.Timestamptz(6)
-  type_fk          BigInt?
-  name             String     @db.VarChar
-  description      String?    @db.VarChar
-  capacity_kg      BigInt?
-  lift_height_mm   BigInt?
-  fork_size        String?    @db.VarChar
-  battery_voltage  Int?
-  battery_ampere   Int?
-  battery_type     String?    @db.VarChar
-  controller_type  String?    @db.VarChar
-  travel_speed_kmh Float?     @db.Real
-  rrp              Int
-  Equipment        Equipment? @relation(fields: [type_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Note             Note[]
-  Optional         Optional[]
-}
-
-model Note {
-  id          BigInt    @id @default(autoincrement())
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  model_fk    BigInt?
-  description String    @db.VarChar
-  Model       Model?    @relation(fields: [model_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model Optional {
-  id          BigInt    @id @default(autoincrement())
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  model_fk    BigInt?
-  description String?   @db.VarChar
-  rrp         Int
-  Model       Model?    @relation(fields: [model_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  username   String    @unique @db.VarChar
+  password   String    @db.VarChar
 }
