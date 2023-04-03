@@ -1,8 +1,8 @@
-# Nuxt 3 Minimal Starter
+# Forklift-Nuxt
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Setup
+## Backend fresh deploy
 
 1. Make sure to install the dependencies:
 
@@ -17,18 +17,37 @@ npm install
 pnpm install
 ```
 
-2. Initialise Prisma:
-```bash
-npx prisma migrate dev
-npx prisma migrate reset
+2. Have a .env file at root folder with the following format:
+```yaml
+SUPABASE_URL="<URL HERE>"
+SUPABASE_KEY="<ANON KEY HERE>"
+DATABASE_URL="<PGSQL URL HERE>"
 ```
 
-3. Seed the database:
+3. Initialise Prisma:
 ```bash
+npx prisma init
+npx prisma generate
+npx prisma db migrate dev
+npx prisma db migrate reset
 npx prisma db seed
 ```
 
-4. Have a .env file at root folder
+## Backend sync to existing environment
+Same steps as [above](#backend-fresh-deploy), except:
+
+3. Sync to Prisma (DO NOT RUN MIGRATE OR DATABASE WILL BE OVERWRITTEN):
+```bash
+npx prisma db pull
+```
+
+
+## Backend API routes
+```ts
+/inventory
+/inventory/[equipment]
+/inventory/[equipment]/[model]
+```
 
 ## Development Server
 
