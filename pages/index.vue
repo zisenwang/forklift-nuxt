@@ -1,23 +1,29 @@
 <template>
   <el-container style="height: 100vh">
-    <el-aside  width="200px">
+    <el-aside  width="250px">
       <el-scrollbar>
         <el-menu>
           <el-sub-menu index="1">
             <template #title>
               <el-icon><Forklift /></el-icon>Forklifts
             </template>
-            <el-menu-item-group>
-              <template #title>Group 1</template>
-              <el-menu-item index="1-1">Option 1</el-menu-item>
-              <el-menu-item index="1-2">Option 2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group 2">
-              <el-menu-item index="1-3">Option 3</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="1-4">
-              <template #title>Option4</template>
-              <el-menu-item index="1-4-1">Option 4-1</el-menu-item>
+<!--            <el-menu-item-group-->
+<!--                >-->
+<!--              <template #title>{{e}}</template>-->
+<!--              <el-menu-item index="1-1">Option 1</el-menu-item>-->
+<!--              <el-menu-item index="1-2">Option 2</el-menu-item>-->
+<!--            </el-menu-item-group>-->
+<!--            <el-menu-item-group title="Group 2">-->
+<!--              <el-menu-item index="1-3">Option 3</el-menu-item>-->
+<!--            </el-menu-item-group>-->
+            <el-sub-menu
+                v-for="(e,i) in inventory"
+                :key="e"
+                :index="'1-'+i.toString()"
+                >
+              <template #title>{{e}}</template>
+
+              <el-menu-item>Option 4-1</el-menu-item>
             </el-sub-menu>
           </el-sub-menu>
 <!--          <el-sub-menu index="2">-->
@@ -91,8 +97,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref} from 'vue'
 import { Menu as IconMenu, Message, Setting, Van } from '@element-plus/icons-vue'
+import useInventory from "~/composables/useInventory";
+import {computed} from "@vue/reactivity";
+
+
+
+// const inventory = await useInventory().then((res)=>{
+//       return res.value.map((item) => item.equipment);
+//     }
+// );
+const cached = await useInventory();
+const inventory = computed(() => {
+  return cached.value.map((item) => (item.equipment));
+})
 const item = {
   date: '2016-05-02',
   name: 'Tom',

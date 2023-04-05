@@ -82,12 +82,12 @@ router.get('/:equipment', equipment_route)
 router.get('/:equipment/:model', model_route)
 
 // Catch-all handler for invalid path
-router.get('/**', defineEventHandler( () => {
-    throw createError({
-        statusCode: 404,
-        statusMessage: 'Page not found :( '
-    })
-}))
+// router.get('/**', defineEventHandler( () => {
+//     throw createError({
+//         statusCode: 404,
+//         statusMessage: 'Page not found :( '
+//     })
+// }))
 
 export default useBase('/inventory', router.handler)
 
