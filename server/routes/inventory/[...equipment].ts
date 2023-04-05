@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 // ROUTE HANDLER FOR /inventory/:equipment
 const equipment_route = defineEventHandler( async(event) => {
     const reqEquipment = event.context.params?.equipment;
-
     const searchResults = await prisma.inventory.findFirstOrThrow({
         where: {
             equipment: {
@@ -82,12 +81,12 @@ router.get('/:equipment', equipment_route)
 router.get('/:equipment/:model', model_route)
 
 // Catch-all handler for invalid path
-// router.get('/**', defineEventHandler( () => {
-//     throw createError({
-//         statusCode: 404,
-//         statusMessage: 'Page not found :( '
-//     })
-// }))
+router.get('/**', defineEventHandler( () => {
+    throw createError({
+        statusCode: 404,
+        statusMessage: 'Page not found :( '
+    })
+}))
 
 export default useBase('/inventory', router.handler)
 

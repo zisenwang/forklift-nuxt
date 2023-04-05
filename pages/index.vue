@@ -2,8 +2,8 @@
   <el-container style="height: 100vh">
     <el-aside  width="250px">
       <el-scrollbar>
-        <el-menu>
-          <el-sub-menu index="1">
+        <el-menu :default-openeds="['1']">
+          <el-sub-menu index="1" >
             <template #title>
               <el-icon><Forklift /></el-icon>Forklifts
             </template>
@@ -17,13 +17,19 @@
 <!--              <el-menu-item index="1-3">Option 3</el-menu-item>-->
 <!--            </el-menu-item-group>-->
             <el-sub-menu
-                v-for="(e,i) in inventory"
-                :key="e"
-                :index="'1-'+i.toString()"
+                v-for="(e,index) in res"
+                :key="e.equipment"
+                :index="'1-'+index.toString()"
                 >
-              <template #title>{{e}}</template>
+              <template #title>{{e.equipment}}</template>
 
-              <el-menu-item>Option 4-1</el-menu-item>
+              <el-menu-item
+                  v-for="(m,i) in e.models"
+                  :key="m.model"
+                  :index="m.model"
+              >
+                {{m.model}}
+              </el-menu-item>
             </el-sub-menu>
           </el-sub-menu>
 <!--          <el-sub-menu index="2">-->
@@ -101,17 +107,15 @@ import { ref} from 'vue'
 import { Menu as IconMenu, Message, Setting, Van } from '@element-plus/icons-vue'
 import useInventory from "~/composables/useInventory";
 import {computed} from "@vue/reactivity";
+import useFetchWithCache from "~/composables/useFetchWithCache";
 
-
-
-// const inventory = await useInventory().then((res)=>{
-//       return res.value.map((item) => item.equipment);
-//     }
-// );
-const cached = await useInventory();
-const inventory = computed(() => {
-  return cached.value.map((item) => (item.equipment));
-})
+const cachedInventory = await useInventory('inventory');
+const res=[];
+for (const inventory of cachedInventory.value) {
+  let s = inventory.equipment.replaceAll(' ', '_');
+  const temp = await useInventory(`${s}`);
+  res.push({equipment: inventory.equipment, models: temp.value.Models})
+}
 const item = {
   date: '2016-05-02',
   name: 'Tom',
