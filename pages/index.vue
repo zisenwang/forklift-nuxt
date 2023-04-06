@@ -2,70 +2,30 @@
   <el-container style="height: 100vh">
     <el-aside  width="250px">
       <el-scrollbar>
-        <el-menu :default-openeds="['1']">
+        <el-menu
+            :default-openeds="['1']"
+        >
           <el-sub-menu index="1" >
             <template #title>
               <el-icon><Forklift /></el-icon>Forklifts
             </template>
-<!--            <el-menu-item-group-->
-<!--                >-->
-<!--              <template #title>{{e}}</template>-->
-<!--              <el-menu-item index="1-1">Option 1</el-menu-item>-->
-<!--              <el-menu-item index="1-2">Option 2</el-menu-item>-->
-<!--            </el-menu-item-group>-->
-<!--            <el-menu-item-group title="Group 2">-->
-<!--              <el-menu-item index="1-3">Option 3</el-menu-item>-->
-<!--            </el-menu-item-group>-->
             <el-sub-menu
-                v-for="(e,index) in res"
+                v-for="e in res"
                 :key="e.equipment"
-                :index="'1-'+index.toString()"
+                :index="e.equipment"
                 >
               <template #title>{{e.equipment}}</template>
 
               <el-menu-item
-                  v-for="(m,i) in e.models"
+                  v-for="m in e.models"
                   :key="m.model"
                   :index="m.model"
+                  @click="handleItemClick"
               >
                 {{m.model}}
               </el-menu-item>
             </el-sub-menu>
           </el-sub-menu>
-<!--          <el-sub-menu index="2">-->
-<!--            <template #title>-->
-<!--              <el-icon><icon-menu /></el-icon>Navigator Two-->
-<!--            </template>-->
-<!--            <el-menu-item-group>-->
-<!--              <template #title>Group 1</template>-->
-<!--              <el-menu-item index="2-1">Option 1</el-menu-item>-->
-<!--              <el-menu-item index="2-2">Option 2</el-menu-item>-->
-<!--            </el-menu-item-group>-->
-<!--            <el-menu-item-group title="Group 2">-->
-<!--              <el-menu-item index="2-3">Option 3</el-menu-item>-->
-<!--            </el-menu-item-group>-->
-<!--            <el-sub-menu index="2-4">-->
-<!--              <template #title>Option 4</template>-->
-<!--              <el-menu-item index="2-4-1">Option 4-1</el-menu-item>-->
-<!--            </el-sub-menu>-->
-<!--          </el-sub-menu>-->
-<!--          <el-sub-menu index="3">-->
-<!--            <template #title>-->
-<!--              <el-icon><setting /></el-icon>Navigator Three-->
-<!--            </template>-->
-<!--            <el-menu-item-group>-->
-<!--              <template #title>Group 1</template>-->
-<!--              <el-menu-item index="3-1">Option 1</el-menu-item>-->
-<!--              <el-menu-item index="3-2">Option 2</el-menu-item>-->
-<!--            </el-menu-item-group>-->
-<!--            <el-menu-item-group title="Group 2">-->
-<!--              <el-menu-item index="3-3">Option 3</el-menu-item>-->
-<!--            </el-menu-item-group>-->
-<!--            <el-sub-menu index="3-4">-->
-<!--              <template #title>Option 4</template>-->
-<!--              <el-menu-item index="3-4-1">Option 4-1</el-menu-item>-->
-<!--            </el-sub-menu>-->
-<!--          </el-sub-menu>-->
         </el-menu>
       </el-scrollbar>
     </el-aside>
@@ -90,13 +50,49 @@
       </el-header>
 
       <el-main>
-        <el-scrollbar>
-          <el-table :data="tableData">
-            <el-table-column prop="date" label="Date" width="140" />
-            <el-table-column prop="name" label="Name" width="120" />
-            <el-table-column prop="address" label="Address" />
-          </el-table>
-        </el-scrollbar>
+        <el-descriptions
+            class="margin-top"
+            :title="title"
+            :column="1"
+            v-if="model"
+            border
+        >
+          <template #extra>
+            <el-button type="primary">Operation</el-button>
+          </template>
+          <el-descriptions-item label="Model" >{{ model.model }}</el-descriptions-item>
+          <el-descriptions-item label="Description" label-class-name="my-label">{{ model.description }}</el-descriptions-item>
+          <el-descriptions-item label="Capacity (kg)" label-class-name="my-label">{{ model.capacity_kg }}</el-descriptions-item>
+          <el-descriptions-item label="Lift Height (mm)" label-class-name="my-label">{{ model.lift_height_mm }}</el-descriptions-item>
+          <el-descriptions-item label="Fork Size" label-class-name="my-label">{{ model.fork_size }}</el-descriptions-item>
+          <el-descriptions-item label="Battery Voltage" label-class-name="my-label">{{ model.battery_voltage }}</el-descriptions-item>
+          <el-descriptions-item label="Battery Ampere" label-class-name="my-label">{{ model.battery_ampere }}</el-descriptions-item>
+          <el-descriptions-item label="Battery Type" label-class-name="my-label">{{ model.battery_type }}</el-descriptions-item>
+          <el-descriptions-item label="Controller Type" label-class-name="my-label">{{ model.controller_type }}</el-descriptions-item>
+          <el-descriptions-item label="Travel Speed (km/h)" label-class-name="my-label">{{ model.travel_speed_kmh }}</el-descriptions-item>
+          <el-descriptions-item label="RRP" label-class-name="my-label">{{ model.rrp }}</el-descriptions-item>
+          <el-descriptions-item label="Optionals" label-class-name="my-label">
+            <el-row>
+              <el-col
+                  v-for="(o, i) in model.optionals"
+                  :key="o"
+                  :span="7"
+                  :offset="model.optionals.length > 3 ? (i%3===0?0:1) : (i>0?2:0)"
+              >
+                <el-card class="card" shadow="hover" :body-style="{ padding: '15px' }">
+                  <template #header>
+                    <div class="card-header">
+                      <span>{{'Option ' + (i+1)}}</span>
+                    </div>
+                  </template>
+                  <div class="text item">{{ 'Description: ' + o.description }}</div>
+                  <div class="text item">{{ 'RRP: ' + o.rrp }}</div>
+                </el-card>
+              </el-col>
+            </el-row>
+          </el-descriptions-item>
+          <el-descriptions-item label="Notes" label-class-name="my-label">{{ model.notes.length ===0 ?'': model.notes[0]}}</el-descriptions-item>
+        </el-descriptions>
       </el-main>
     </el-container>
   </el-container>
@@ -106,25 +102,41 @@
 import { ref} from 'vue'
 import { Menu as IconMenu, Message, Setting, Van } from '@element-plus/icons-vue'
 import useInventory from "~/composables/useInventory";
-import {computed} from "@vue/reactivity";
-import useFetchWithCache from "~/composables/useFetchWithCache";
+import useEquipment from "~/composables/useEquipment";
 
 const cachedInventory = await useInventory('inventory');
+// inventory list
 const res=[];
 for (const inventory of cachedInventory.value) {
   let s = inventory.equipment.replaceAll(' ', '_');
   const temp = await useInventory(`${s}`);
   res.push({equipment: inventory.equipment, models: temp.value.Models})
 }
-const item = {
-  date: '2016-05-02',
-  name: 'Tom',
-  address: 'No. 189, Grove St, Los Angeles',
+
+// description item
+const title = ref(null);
+const model = ref(null);
+const handleItemClick = async (event) =>{
+  const parentPath = event.indexPath[1].replaceAll(' ','_');
+  const childIndex = event.index;
+  const cachedModel = await useEquipment(parentPath,childIndex);
+  title.value = childIndex;
+  model.value = cachedModel.value;
+  console.log(model.value)
 }
-const tableData = ref(Array.from({ length: 20 }).fill(item))
 </script>
 
 <style scoped>
+.card {
+  margin-top:15px;
+}
+.card-header {
+  text-align: center;
+  width: 100%;
+}
+:deep(.my-label) {
+  width:150px;
+}
 .layout-container-demo .el-header {
   position: relative;
   background-color: var(--el-color-primary-light-7);
